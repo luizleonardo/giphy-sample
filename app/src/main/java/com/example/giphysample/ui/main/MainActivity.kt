@@ -1,9 +1,8 @@
-package com.example.giphysample
+package com.example.giphysample.ui.main
 
 import android.os.Bundle
+import com.example.giphysample.R
 import com.example.giphysample.ui.BaseActivity
-import com.example.giphysample.ui.main.SectionsPagerAdapter
-import com.example.giphysample.ui.main.TAB_TITLES
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_main.*
 
