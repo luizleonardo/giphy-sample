@@ -44,6 +44,19 @@ dependencies {
     implementation "com.google.android.material:material:$project.ext.materialVersion"
     implementation "androidx.constraintlayout:constraintlayout:$project.ext.constraintLayoutVersion"
 
+    // Network Retrofit stuff
+    implementation "com.squareup.retrofit2:retrofit:$project.ext.retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$project.ext.retrofitGsonConverterVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava3:$project.ext.retrofitAdapterRxVersion"
+
+    // Network Okhttp stuff
+    implementation "com.squareup.okhttp3:okhttp:$project.ext.okHtppVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$project.ext.okHtppLoggingInterceptorVersion"
+
+    // Rxjava stuff
+    implementation "io.reactivex.rxjava3:rxandroid:$project.ext.rxAndroidVersion"
+    implementation "io.reactivex.rxjava3:rxjava:$project.ext.rxJavaVersion"
+
     // Jetpack stuff
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$project.ext.liveDataKtxVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$project.ext.viewModelKtxVersion"

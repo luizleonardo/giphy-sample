@@ -29,6 +29,13 @@ allprojects {
         junitVersion = '4.13.1'
         junitExtVersion = '1.1.2'
         espressoCoreVersion = '3.3.0'
+        retrofitVersion = '2.9.0'
+        retrofitGsonConverterVersion = '2.9.0'
+        retrofitAdapterRxVersion = '2.9.0'
+        okHtppVersion = '4.9.0'
+        okHtppLoggingInterceptorVersion = '4.9.0'
+        rxJavaVersion = '3.0.7'
+        rxAndroidVersion = '3.0.0'
     }
 }
 
