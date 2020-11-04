@@ -36,6 +36,7 @@ allprojects {
         okHtppLoggingInterceptorVersion = '4.9.0'
         rxJavaVersion = '3.0.7'
         rxAndroidVersion = '3.0.0'
+        koinVersion = '2.1.6'
     }
 }
 

@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -16,6 +17,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "API_KEY", "\"UuIufZYbv0ZyyuSa3Vnn0kx20QMukor9\"")
     }
 
     buildTypes {
@@ -56,6 +59,10 @@ dependencies {
     // Rxjava stuff
     implementation "io.reactivex.rxjava3:rxandroid:$project.ext.rxAndroidVersion"
     implementation "io.reactivex.rxjava3:rxjava:$project.ext.rxJavaVersion"
+
+    // DI stuff
+    implementation "org.koin:koin-core:$project.ext.koinVersion"
+    implementation "org.koin:koin-android-viewmodel:$project.ext.koinVersion"
 
     // Jetpack stuff
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$project.ext.liveDataKtxVersion"
