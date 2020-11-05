@@ -1,17 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.GiphySample" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
+    <style name="Theme.GiphySample" parent="Theme.MaterialComponents.NoActionBar.Bridge">
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryVariant">@color/primaryLightColor</item>
         <item name="colorOnPrimary">@color/primaryDarkColor</item>
-        <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/secondaryColor</item>
         <item name="colorSecondaryVariant">@color/secondaryLightColor</item>
         <item name="colorOnSecondary">@color/secondaryDarkColor</item>
-        <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
     </style>
 
     <style name="Theme.GiphySample.NoActionBar">
@@ -22,4 +17,19 @@
     <style name="Theme.GiphySample.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.GiphySample.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Theme.SearchView" parent="Widget.AppCompat.SearchView">
+        <item name="android:background">@null</item>
+        <item name="queryBackground">@null</item>
+        <item name="submitBackground">@null</item>
+        <item name="android:textColorHint">@android:color/white</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:editTextColor">@android:color/white</item>
+        <item name="queryHint">@string/fragment_trending_search_view_hint</item>
+        <item name="android:iconifiedByDefault">false</item>
+        <item name="iconifiedByDefault">false</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:imeOptions">actionSearch</item>
+        <item name="android:focusable">false</item>
+    </style>
 </resources>

@@ -19,7 +19,10 @@ class TrendingViewModel(
     val liveDataTrendingGifList: MutableSingleLiveData<ViewData<List<GiphyTrendingItem>>> =
         MutableSingleLiveData()
 
-    fun fetchTrendingGifs(limit: Int?, offset: Int?) {
+    val liveDataSearch: MutableSingleLiveData<ViewData<List<GiphyTrendingItem>>> =
+        MutableSingleLiveData()
+
+    fun fetchTrendingGifs(limit: Int? = null, offset: Int? = null) {
         compositeDisposable.add(
             giphyRepository.fetchTrendingList(limit, offset)
                 .subscribeOn(Schedulers.io())
@@ -38,6 +41,31 @@ class TrendingViewModel(
                     override fun onComplete() {
                         liveDataTrendingGifList.value =
                             ViewData(status = COMPLETE, data = liveDataTrendingGifList.value?.data)
+                    }
+
+                })
+        )
+    }
+
+    fun search(limit: Int? = null, offset: Int? = null, query: String?) {
+        compositeDisposable.add(
+            giphyRepository.fetchSearch(limit, offset, query)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { liveDataSearch.postValue(ViewData(LOADING)) }
+                .subscribeWith(object : DisposableObserver<GiphyTrendingHolder>() {
+                    override fun onNext(response: GiphyTrendingHolder) {
+                        liveDataSearch.value =
+                            ViewData(status = SUCCESS, data = response.data)
+                    }
+
+                    override fun onError(error: Throwable) {
+                        liveDataSearch.value = ViewData(ERROR, error = error)
+                    }
+
+                    override fun onComplete() {
+                        liveDataSearch.value =
+                            ViewData(status = COMPLETE, data = liveDataSearch.value?.data)
                     }
 
                 })
