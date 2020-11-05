@@ -39,6 +39,8 @@ allprojects {
         koinVersion = '2.1.6'
         roomVersion = "2.2.5"
         coroutinesAdapterVersion = "0.9.2"
+        glideVersion = "4.11.0"
+        shimmerVersion = "0.5.0"
     }
 }
 

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.facebook.shimmer.ShimmerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/list_item_gif_shimmer_frame_layout"
+    android:layout_width="match_parent"
+    android:layout_height="154dp"
+    android:padding="2dp"
+    app:shimmer_auto_start="true">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/list_item_gif_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY" />
+
+</com.facebook.shimmer.ShimmerFrameLayout>
