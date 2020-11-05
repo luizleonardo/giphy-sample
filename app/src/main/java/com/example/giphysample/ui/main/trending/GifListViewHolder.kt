@@ -16,7 +16,7 @@ import com.example.giphysample.R
 import com.example.giphysample.data.entities.GiphyTrendingItem
 import com.facebook.shimmer.ShimmerFrameLayout
 
-class TrendingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class GifListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val gifImage: AppCompatImageView = itemView.findViewById(R.id.list_item_gif_image)
     private val shimmerFrameLayout: ShimmerFrameLayout =

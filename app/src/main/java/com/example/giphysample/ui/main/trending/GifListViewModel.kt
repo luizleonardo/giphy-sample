@@ -12,11 +12,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 
-class TrendingViewModel(
+class GifListViewModel(
     private val giphyRepository: GiphyRepository
 ) : BaseViewModel(), LifecycleObserver {
 
-    val liveDataTrendingGifList: MutableSingleLiveData<ViewData<List<GiphyTrendingItem>>> =
+    val liveDataTrendingGifs: MutableSingleLiveData<ViewData<List<GiphyTrendingItem>>> =
         MutableSingleLiveData()
 
     val liveDataSearch: MutableSingleLiveData<ViewData<List<GiphyTrendingItem>>> =
@@ -24,23 +24,23 @@ class TrendingViewModel(
 
     fun fetchTrendingGifs(limit: Int? = null, offset: Int? = null) {
         compositeDisposable.add(
-            giphyRepository.fetchTrendingList(limit, offset)
+            giphyRepository.fetchTrendingGifs(limit, offset)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { liveDataTrendingGifList.postValue(ViewData(LOADING)) }
+                .doOnSubscribe { liveDataTrendingGifs.postValue(ViewData(LOADING)) }
                 .subscribeWith(object : DisposableObserver<GiphyTrendingHolder>() {
                     override fun onNext(response: GiphyTrendingHolder) {
-                        liveDataTrendingGifList.value =
+                        liveDataTrendingGifs.value =
                             ViewData(status = SUCCESS, data = response.data)
                     }
 
                     override fun onError(error: Throwable) {
-                        liveDataTrendingGifList.value = ViewData(ERROR, error = error)
+                        liveDataTrendingGifs.value = ViewData(ERROR, error = error)
                     }
 
                     override fun onComplete() {
-                        liveDataTrendingGifList.value =
-                            ViewData(status = COMPLETE, data = liveDataTrendingGifList.value?.data)
+                        liveDataTrendingGifs.value =
+                            ViewData(status = COMPLETE, data = liveDataTrendingGifs.value?.data)
                     }
 
                 })
@@ -49,7 +49,7 @@ class TrendingViewModel(
 
     fun search(limit: Int? = null, offset: Int? = null, query: String?) {
         compositeDisposable.add(
-            giphyRepository.fetchSearch(limit, offset, query)
+            giphyRepository.search(limit, offset, query)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { liveDataSearch.postValue(ViewData(LOADING)) }

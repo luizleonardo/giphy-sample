@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import com.example.giphysample.R
 import com.example.giphysample.data.entities.GiphyTrendingItem
 
-class TrendingAdapter() : ListAdapter<GiphyTrendingItem, TrendingViewHolder>(
+class GifListAdapter() : ListAdapter<GiphyTrendingItem, GifListViewHolder>(
     object :
         DiffUtil.ItemCallback<GiphyTrendingItem>() {
         override fun areItemsTheSame(oldItem: GiphyTrendingItem, newItem: GiphyTrendingItem) =
@@ -18,13 +18,13 @@ class TrendingAdapter() : ListAdapter<GiphyTrendingItem, TrendingViewHolder>(
     }
 ) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrendingViewHolder {
-        return TrendingViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GifListViewHolder {
+        return GifListViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.list_item_gif, parent, false)
         )
     }
 
-    override fun onBindViewHolder(holder: TrendingViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: GifListViewHolder, position: Int) {
         holder.bind(currentList[position])
     }
 

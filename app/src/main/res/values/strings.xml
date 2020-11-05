@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Giphy Sample</string>
-    <string name="main_activity_view_pager_tab_text_trending">Trending</string>
+    <string name="main_activity_view_pager_tab_text_trending">Gifs</string>
     <string name="main_activity_view_pager_tab_text_favorite">Favorites</string>
-    <string name="fragment_trending_label">Trending gifs</string>
-    <string name="fragment_trending_search_label">Search result</string>
-    <string name="fragment_trending_search_view_hint">Search here</string>
+    <string name="fragment_gif_list_trending_label">Trending gifs</string>
+    <string name="fragment_gif_list_search_label">Search result</string>
+    <string name="fragment_gif_list_search_view_hint">Search here</string>
 </resources>

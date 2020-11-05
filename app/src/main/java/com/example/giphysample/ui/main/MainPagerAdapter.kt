@@ -6,7 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.giphysample.R
 import com.example.giphysample.ui.main.favorite.FavoriteFragment
-import com.example.giphysample.ui.main.trending.TrendingFragment
+import com.example.giphysample.ui.main.trending.GifListFragment
 
 val TAB_TITLES = arrayOf(
     R.string.main_activity_view_pager_tab_text_trending,
@@ -15,11 +15,7 @@ val TAB_TITLES = arrayOf(
 
 private const val NUM_PAGES = 2
 
-/**
- * A [FragmentStateAdapter] that returns a fragment corresponding to
- * one of the sections/tabs/pages.
- */
-class SectionsPagerAdapter(lifecycle: Lifecycle, fm: FragmentManager) :
+class MainPagerAdapter(lifecycle: Lifecycle, fm: FragmentManager) :
     FragmentStateAdapter(fm, lifecycle) {
 
     override fun getItemCount(): Int {
@@ -27,6 +23,6 @@ class SectionsPagerAdapter(lifecycle: Lifecycle, fm: FragmentManager) :
     }
 
     override fun createFragment(position: Int): Fragment {
-        return if (position == 0) TrendingFragment.newInstance() else FavoriteFragment.newInstance()
+        return if (position == 0) GifListFragment.newInstance() else FavoriteFragment.newInstance()
     }
 }

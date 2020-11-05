@@ -5,7 +5,7 @@
     android:id="@+id/fragment_favorite_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.trending.TrendingFragment">
+    tools:context=".ui.main.trending.GifListFragment">
 
     <TextView
         android:id="@+id/section_label"

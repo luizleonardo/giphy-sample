@@ -25,7 +25,7 @@
         <item name="android:textColorHint">@android:color/white</item>
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:editTextColor">@android:color/white</item>
-        <item name="queryHint">@string/fragment_trending_search_view_hint</item>
+        <item name="queryHint">@string/fragment_gif_list_search_view_hint</item>
         <item name="android:iconifiedByDefault">false</item>
         <item name="iconifiedByDefault">false</item>
         <item name="android:textSize">18sp</item>

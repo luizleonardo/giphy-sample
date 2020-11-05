@@ -20,32 +20,32 @@ import com.example.giphysample.ui.main.trending.RxSearchObservable.DEBOUNCE
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.fragment_trending.*
-import kotlinx.android.synthetic.main.fragment_trending.view.*
+import kotlinx.android.synthetic.main.fragment_gif_list.*
+import kotlinx.android.synthetic.main.fragment_gif_list.view.*
 import kotlinx.android.synthetic.main.layout_search_view.*
 import kotlinx.android.synthetic.main.layout_search_view.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
-class TrendingFragment : BaseFragment() {
+class GifListFragment : BaseFragment() {
 
     companion object {
         private const val COLUMNS = 2
 
         @JvmStatic
-        fun newInstance(): TrendingFragment = TrendingFragment()
+        fun newInstance(): GifListFragment = GifListFragment()
     }
 
-    private val trendingViewModel: TrendingViewModel by viewModel()
+    private val gifListViewModel: GifListViewModel by viewModel()
 
-    private val trendingAdapter = TrendingAdapter()
+    private val trendingAdapter = GifListAdapter()
     private val compositeDisposable = CompositeDisposable()
     private var lastSearch: String? = null
     private var appCompatImageViewClose: AppCompatImageView? = null
     private var searchViewEditText: EditText? = null
 
-    override fun layoutResource(): Int = R.layout.fragment_trending
+    override fun layoutResource(): Int = R.layout.fragment_gif_list
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,7 +54,7 @@ class TrendingFragment : BaseFragment() {
     ): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
-        with(trendingViewModel) {
+        with(gifListViewModel) {
             viewLifecycleOwner.lifecycle.addObserver(this)
             observeTrendingGifList(this)
             observeSearch(this)
@@ -63,30 +63,30 @@ class TrendingFragment : BaseFragment() {
         return view
     }
 
-    private fun observeSearch(trendingViewModel: TrendingViewModel) {
-        trendingViewModel.liveDataSearch.observe(
+    private fun observeSearch(gifListViewModel: GifListViewModel) {
+        gifListViewModel.liveDataSearch.observe(
             viewLifecycleOwner, {
                 when (it?.status) {
                     ViewData.Status.LOADING -> {
                         custom_view_search_view_progress.visible()
                         appCompatImageViewClose?.gone()
-                        fragment_trending_text_view_label.gone()
-                        fragment_trending_recycler_view.gone()
+                        fragment_gif_list_text_view_label.gone()
+                        fragment_gif_list_recycler_view.gone()
                     }
                     ViewData.Status.COMPLETE -> {
                         custom_view_search_view_progress.gone()
                         appCompatImageViewClose?.visible()
-                        fragment_trending_recycler_view.visible()
-                        fragment_trending_text_view_label.visible()
-                        fragment_trending_text_view_label.text = getString(R.string.fragment_trending_search_label)
-                        fragment_trending_recycler_view.startShowAnimation()
+                        fragment_gif_list_recycler_view.visible()
+                        fragment_gif_list_text_view_label.visible()
+                        fragment_gif_list_text_view_label.text = getString(R.string.fragment_gif_list_search_label)
+                        fragment_gif_list_recycler_view.startShowAnimation()
                         trendingAdapter.submitList(it.data)
                     }
                     ViewData.Status.ERROR -> {
                         appCompatImageViewClose?.visible()
-                        fragment_trending_text_view_label.gone()
+                        fragment_gif_list_text_view_label.gone()
                         custom_view_search_view_progress.gone()
-                        fragment_trending_recycler_view.gone()
+                        fragment_gif_list_recycler_view.gone()
                     }
                 }
             }
@@ -103,7 +103,7 @@ class TrendingFragment : BaseFragment() {
             .subscribe(
                 {
                     this.lastSearch = it
-                    trendingViewModel.search(query = it)
+                    gifListViewModel.search(query = it)
                 },
                 {
                     // TODO show error
@@ -113,12 +113,12 @@ class TrendingFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        trendingViewModel.fetchTrendingGifs()
+        gifListViewModel.fetchTrendingGifs()
     }
 
     override fun setupView(view: View) {
         super.setupView(view)
-        view.fragment_trending_recycler_view.apply {
+        view.fragment_gif_list_recycler_view.apply {
             layoutManager = GridLayoutManager(view.context, COLUMNS)
             adapter = trendingAdapter
         }
@@ -132,7 +132,7 @@ class TrendingFragment : BaseFragment() {
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    if (s.isNullOrEmpty()) trendingViewModel.fetchTrendingGifs()
+                    if (s.isNullOrEmpty()) gifListViewModel.fetchTrendingGifs()
                 }
 
                 override fun afterTextChanged(s: Editable?) {
@@ -146,27 +146,27 @@ class TrendingFragment : BaseFragment() {
         }
     }
 
-    private fun observeTrendingGifList(trendingViewModel: TrendingViewModel) {
-        trendingViewModel.liveDataTrendingGifList.observe(
+    private fun observeTrendingGifList(gifListViewModel: GifListViewModel) {
+        gifListViewModel.liveDataTrendingGifs.observe(
             viewLifecycleOwner, {
                 when (it?.status) {
                     ViewData.Status.LOADING -> {
-                        fragment_trending_progress_bar.visible()
-                        fragment_trending_text_view_label.gone()
-                        fragment_trending_recycler_view.gone()
+                        fragment_gif_list_progress_bar.visible()
+                        fragment_gif_list_text_view_label.gone()
+                        fragment_gif_list_recycler_view.gone()
                     }
                     ViewData.Status.COMPLETE -> {
-                        fragment_trending_progress_bar.gone()
-                        fragment_trending_recycler_view.visible()
-                        fragment_trending_text_view_label.visible()
-                        fragment_trending_recycler_view.startShowAnimation()
-                        fragment_trending_text_view_label.text = getString(R.string.fragment_trending_label)
+                        fragment_gif_list_progress_bar.gone()
+                        fragment_gif_list_recycler_view.visible()
+                        fragment_gif_list_text_view_label.visible()
+                        fragment_gif_list_recycler_view.startShowAnimation()
+                        fragment_gif_list_text_view_label.text = getString(R.string.fragment_gif_list_trending_label)
                         trendingAdapter.submitList(it.data)
                     }
                     ViewData.Status.ERROR -> {
-                        fragment_trending_text_view_label.gone()
-                        fragment_trending_progress_bar.gone()
-                        fragment_trending_recycler_view.gone()
+                        fragment_gif_list_text_view_label.gone()
+                        fragment_gif_list_progress_bar.gone()
+                        fragment_gif_list_recycler_view.gone()
                     }
                 }
             }

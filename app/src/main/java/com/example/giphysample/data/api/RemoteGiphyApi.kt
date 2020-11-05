@@ -14,7 +14,7 @@ interface RemoteGiphyApi {
     ): Observable<GiphyTrendingHolder>
 
     @GET("search")
-    fun searchGifsByKeyWordAsync(
+    fun searchGifsByQuery(
         @Query("limit") limit: Int? = 25,
         @Query("offset") offset: Int? = 0,
         @Query("q") query: String?

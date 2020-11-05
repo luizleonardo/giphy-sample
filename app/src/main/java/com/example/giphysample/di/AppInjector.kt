@@ -2,7 +2,7 @@ package com.example.giphysample.di
 
 import com.example.giphysample.data.api.RemoteGiphyApi
 import com.example.giphysample.data.repository.GiphyRepository
-import com.example.giphysample.ui.main.trending.TrendingViewModel
+import com.example.giphysample.ui.main.trending.GifListViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -22,6 +22,6 @@ val netWorkModules = module {
 
 val viewModels = module {
     viewModel {
-        TrendingViewModel(get())
+        GifListViewModel(get())
     }
 }
