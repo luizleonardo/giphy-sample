@@ -4,27 +4,63 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.widget.Toast
 import com.example.giphysample.R
+import com.example.giphysample.ui.ViewData
+import com.example.giphysample.ui.main.base.BaseFragment
+import org.koin.android.viewmodel.ext.android.viewModel
 
-class TrendingFragment : Fragment() {
+class TrendingFragment : BaseFragment() {
 
-    //private lateinit var pageViewModel: PageViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    companion object {
+        @JvmStatic
+        fun newInstance(): TrendingFragment = TrendingFragment()
     }
+
+    private val trendingViewModel: TrendingViewModel by viewModel()
+
+    override fun layoutResource(): Int = R.layout.fragment_trending
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_trending, container, false)
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+
+        with(trendingViewModel) {
+            viewLifecycleOwner.lifecycle.addObserver(this)
+            observeTrendingGifList(this)
+        }
+
+        return view
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(): TrendingFragment = TrendingFragment()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        trendingViewModel.fetchTrendingGifs(null, null)
+    }
+
+    override fun setupView(view: View) {
+        super.setupView(view)
+    }
+
+    private fun observeTrendingGifList(trendingViewModel: TrendingViewModel) {
+        trendingViewModel.liveDataTrendingGifList.observe(
+            viewLifecycleOwner, {
+                when (it?.status) {
+                    ViewData.Status.LOADING -> {
+                        Toast.makeText(context, "LOADING LIST", Toast.LENGTH_SHORT).show()
+                    }
+                    ViewData.Status.COMPLETE -> {
+                        Toast.makeText(context, "COMPLETE LIST: ${it.data}", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                    ViewData.Status.ERROR -> {
+                        Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        )
     }
 }

@@ -50,19 +50,26 @@ dependencies {
     // Network Retrofit stuff
     implementation "com.squareup.retrofit2:retrofit:$project.ext.retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$project.ext.retrofitGsonConverterVersion"
-    implementation "com.squareup.retrofit2:adapter-rxjava3:$project.ext.retrofitAdapterRxVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$project.ext.retrofitAdapterRxVersion"
 
     // Network Okhttp stuff
     implementation "com.squareup.okhttp3:okhttp:$project.ext.okHtppVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$project.ext.okHtppLoggingInterceptorVersion"
 
     // Rxjava stuff
-    implementation "io.reactivex.rxjava3:rxandroid:$project.ext.rxAndroidVersion"
-    implementation "io.reactivex.rxjava3:rxjava:$project.ext.rxJavaVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$project.ext.rxAndroidVersion"
+    implementation "io.reactivex.rxjava2:rxjava:$project.ext.rxJavaVersion"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$project.ext.coroutinesAdapterVersion"
+
+    // Room stuff
+    implementation "androidx.room:room-runtime:$project.ext.roomVersion"
+    implementation "androidx.room:room-rxjava2:$project.ext.roomVersion"
+    kapt "androidx.room:room-compiler:$project.ext.roomVersion"
 
     // DI stuff
     implementation "org.koin:koin-core:$project.ext.koinVersion"
     implementation "org.koin:koin-android-viewmodel:$project.ext.koinVersion"
+    implementation "org.koin:koin-androidx-scope:$project.ext.koinVersion"
 
     // Jetpack stuff
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$project.ext.liveDataKtxVersion"

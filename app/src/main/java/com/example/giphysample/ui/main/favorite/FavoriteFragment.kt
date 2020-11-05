@@ -4,24 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.example.giphysample.R
+import com.example.giphysample.ui.main.base.BaseFragment
 
-class FavoriteFragment : Fragment() {
-
-    //private lateinit var pageViewModel: PageViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_favorite, container, false)
-    }
+class FavoriteFragment : BaseFragment() {
 
     companion object {
         @JvmStatic
@@ -29,4 +15,17 @@ class FavoriteFragment : Fragment() {
             return FavoriteFragment()
         }
     }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+
+        return view
+    }
+
+    override fun layoutResource(): Int = R.layout.fragment_favorite
+
 }
