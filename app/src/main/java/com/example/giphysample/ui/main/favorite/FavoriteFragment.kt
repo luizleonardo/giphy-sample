@@ -83,9 +83,11 @@ class FavoriteFragment : BaseFragment(), GifListViewHolder.FavoriteCallback {
     override fun layoutResource(): Int = R.layout.fragment_favorite
 
     override fun onFavoriteAdd(data: GiphyImageItem) {
+        favoriteViewModel.addToFavorites(data)
     }
 
     override fun onFavoriteRemove(data: GiphyImageItem) {
+        favoriteViewModel.removeFromFavorites(data)
     }
 
 }
