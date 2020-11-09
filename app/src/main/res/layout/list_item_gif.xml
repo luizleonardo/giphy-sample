@@ -13,15 +13,8 @@
 
     <androidx.appcompat.widget.AppCompatToggleButton
         android:id="@+id/list_item_gif_favorite"
+        style="@style/ListItemGifFavoriteButton"
         android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_gravity="end|top"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/selector_favorite_button"
-        android:text=""
-        android:textOff=""
-        android:textOn=""
-        android:visibility="gone" />
+        android:layout_height="24dp" />
 
 </com.facebook.shimmer.ShimmerFrameLayout>

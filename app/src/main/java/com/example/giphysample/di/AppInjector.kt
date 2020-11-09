@@ -8,7 +8,7 @@ import com.example.giphysample.data.dao.GiphyImageDao
 import com.example.giphysample.data.repository.GiphyRepository
 import com.example.giphysample.data.repository.RoomRepository
 import com.example.giphysample.ui.main.favorite.FavoriteViewModel
-import com.example.giphysample.ui.main.trending.GifListViewModel
+import com.example.giphysample.ui.main.gifList.GifListViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named

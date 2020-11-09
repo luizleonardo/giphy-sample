@@ -5,4 +5,5 @@
     <string name="fragment_gif_list_trending_label">Trending gifs</string>
     <string name="fragment_gif_list_search_label">Search result</string>
     <string name="fragment_gif_list_search_view_hint">Search here</string>
+    <string name="fragment_favorite_empty_text">There is no favorite added yet, just click in the heart button to add one. =D</string>
 </resources>

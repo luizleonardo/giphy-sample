@@ -1,12 +1,13 @@
-package com.example.giphysample.ui
+package com.example.giphysample.ui.main
 
 import androidx.annotation.MainThread
 import androidx.collection.ArraySet
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Observer
 
-class MutableSingleLiveData<T> : MutableLiveData<T>() {
+open class LiveEvent<T> : MediatorLiveData<T>() {
+
     private val observers = ArraySet<ObserverWrapper<in T>>()
 
     @MainThread
@@ -17,12 +18,18 @@ class MutableSingleLiveData<T> : MutableLiveData<T>() {
     }
 
     @MainThread
+    override fun observeForever(observer: Observer<in T>) {
+        val wrapper = ObserverWrapper(observer)
+        observers.add(wrapper)
+        super.observeForever(wrapper)
+    }
+
+    @MainThread
     override fun removeObserver(observer: Observer<in T>) {
         if (observers.remove(observer)) {
             super.removeObserver(observer)
             return
         }
-
         val iterator = observers.iterator()
         while (iterator.hasNext()) {
             val wrapper = iterator.next()
@@ -41,6 +48,7 @@ class MutableSingleLiveData<T> : MutableLiveData<T>() {
     }
 
     private class ObserverWrapper<T>(val observer: Observer<T>) : Observer<T> {
+
         private var pending = false
 
         override fun onChanged(t: T?) {

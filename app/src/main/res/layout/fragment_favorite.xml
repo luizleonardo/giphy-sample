@@ -10,7 +10,7 @@
         android:id="@+id/fragment_favorite_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.main.trending.GifListFragment">
+        tools:context=".ui.main.gifList.GifListFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fragment_favorite_recycler_view"
@@ -22,6 +22,16 @@
             app:layout_constraintStart_toStartOf="@+id/fragment_favorite_content"
             app:layout_constraintTop_toTopOf="@id/fragment_favorite_content"
             tools:listitem="@layout/list_item_gif" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/fragment_favorite_text_view_empty"
+            style="@style/FavoriteTextViewEmpty"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/fragment_favorite_empty_text"
+            app:layout_constraintEnd_toEndOf="@+id/fragment_favorite_content"
+            app:layout_constraintStart_toStartOf="@+id/fragment_favorite_content"
+            app:layout_constraintTop_toTopOf="@+id/fragment_favorite_content" />
 
         <ProgressBar
             android:id="@+id/fragment_favorite_progress_bar"

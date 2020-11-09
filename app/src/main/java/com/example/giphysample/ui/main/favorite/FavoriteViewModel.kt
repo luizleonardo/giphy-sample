@@ -3,8 +3,8 @@ package com.example.giphysample.ui.main.favorite
 import androidx.lifecycle.LifecycleObserver
 import com.example.giphysample.data.entities.GiphyImageItem
 import com.example.giphysample.data.repository.RoomRepository
-import com.example.giphysample.ui.MutableSingleLiveData
 import com.example.giphysample.ui.ViewData
+import com.example.giphysample.ui.main.LiveEvent
 import com.example.giphysample.ui.main.base.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableObserver
@@ -13,11 +13,9 @@ import io.reactivex.schedulers.Schedulers
 class FavoriteViewModel(private val roomRepository: RoomRepository) : BaseViewModel(),
     LifecycleObserver {
 
-    val liveDataAddFavorite: MutableSingleLiveData<ViewData<String>> =
-        MutableSingleLiveData()
+    val liveDataAddFavorite = LiveEvent<ViewData<String>>()
 
-    val liveDataFavoritesList: MutableSingleLiveData<ViewData<List<GiphyImageItem>>> =
-        MutableSingleLiveData()
+    val liveDataFavoritesList = LiveEvent<ViewData<List<GiphyImageItem>>>()
 
     fun addToFavorites(data: GiphyImageItem) {
         compositeDisposable.add(
@@ -28,25 +26,14 @@ class FavoriteViewModel(private val roomRepository: RoomRepository) : BaseViewMo
                     liveDataAddFavorite.value =
                         ViewData(ViewData.Status.LOADING, "Adding to favorite...")
                 }
-                .subscribeWith(object : DisposableObserver<Unit>() {
-                    override fun onError(error: Throwable) {
-                        liveDataAddFavorite.value = ViewData(ViewData.Status.ERROR, error = error)
-                    }
-
-                    override fun onComplete() {
-                        liveDataAddFavorite.value =
-                            ViewData(
-                                status = ViewData.Status.COMPLETE,
-                                data = liveDataAddFavorite.value?.data
-                            )
-                    }
-
-                    override fun onNext(t: Unit) {
+                .subscribe(
+                    {
                         liveDataAddFavorite.value =
                             ViewData(status = ViewData.Status.SUCCESS, data = "Added to favorite")
+                    }, {
+                        liveDataAddFavorite.value = ViewData(ViewData.Status.ERROR, error = it)
                     }
-
-                })
+                )
         )
     }
 
@@ -59,28 +46,16 @@ class FavoriteViewModel(private val roomRepository: RoomRepository) : BaseViewMo
                     liveDataAddFavorite.value =
                         ViewData(ViewData.Status.LOADING, "Removing from favorite...")
                 }
-                .subscribeWith(object : DisposableObserver<Unit>() {
-                    override fun onError(error: Throwable) {
-                        liveDataAddFavorite.value = ViewData(ViewData.Status.ERROR, error = error)
+                .subscribe(
+                    {
+                        liveDataAddFavorite.value = ViewData(
+                            status = ViewData.Status.SUCCESS,
+                            data = "Removed from favorite"
+                        )
+                    }, {
+                        liveDataAddFavorite.value = ViewData(ViewData.Status.ERROR, error = it)
                     }
-
-                    override fun onComplete() {
-                        liveDataAddFavorite.value =
-                            ViewData(
-                                status = ViewData.Status.COMPLETE,
-                                data = liveDataAddFavorite.value?.data
-                            )
-                    }
-
-                    override fun onNext(t: Unit) {
-                        liveDataAddFavorite.value =
-                            ViewData(
-                                status = ViewData.Status.SUCCESS,
-                                data = "Removed from favorite"
-                            )
-                    }
-
-                })
+                )
         )
     }
 

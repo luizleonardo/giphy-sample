@@ -13,8 +13,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/text_progress_bar"
+        style="@style/CustomDialogTextView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:textSize="16sp" />
+        android:layout_height="wrap_content" />
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,4 +1,4 @@
-package com.example.giphysample.ui.main.trending
+package com.example.giphysample.ui.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

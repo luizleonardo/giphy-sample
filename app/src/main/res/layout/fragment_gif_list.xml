@@ -24,10 +24,9 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/fragment_gif_list_text_view_label"
+            style="@style/GifListTextViewLabel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/fragment_gif_list_content"
             app:layout_constraintStart_toStartOf="@+id/fragment_gif_list_content"
             app:layout_constraintTop_toBottomOf="@+id/fragment_gif_list_search_bar"

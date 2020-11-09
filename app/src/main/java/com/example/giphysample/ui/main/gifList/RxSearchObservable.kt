@@ -1,4 +1,4 @@
-package com.example.giphysample.ui.main.trending
+package com.example.giphysample.ui.main.gifList
 
 import androidx.appcompat.widget.SearchView
 import io.reactivex.Observable

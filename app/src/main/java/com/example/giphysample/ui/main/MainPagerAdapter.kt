@@ -1,12 +1,11 @@
 package com.example.giphysample.ui.main
 
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.Lifecycle
+import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.giphysample.R
 import com.example.giphysample.ui.main.favorite.FavoriteFragment
-import com.example.giphysample.ui.main.trending.GifListFragment
+import com.example.giphysample.ui.main.gifList.GifListFragment
 
 val TAB_TITLES = arrayOf(
     R.string.main_activity_view_pager_tab_text_trending,
@@ -15,8 +14,7 @@ val TAB_TITLES = arrayOf(
 
 private const val NUM_PAGES = 2
 
-class MainPagerAdapter(lifecycle: Lifecycle, fm: FragmentManager) :
-    FragmentStateAdapter(fm, lifecycle) {
+class MainPagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
 
     override fun getItemCount(): Int {
         return NUM_PAGES

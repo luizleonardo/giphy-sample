@@ -1,13 +1,13 @@
-package com.example.giphysample.ui.main.trending
+package com.example.giphysample.ui.main.gifList
 
 import androidx.lifecycle.LifecycleObserver
 import com.example.giphysample.data.entities.GiphyImageItem
 import com.example.giphysample.data.entities.GiphyResponseHolder
 import com.example.giphysample.data.repository.GiphyRepository
 import com.example.giphysample.data.repository.RoomRepository
-import com.example.giphysample.ui.MutableSingleLiveData
 import com.example.giphysample.ui.ViewData
 import com.example.giphysample.ui.ViewData.Status.*
+import com.example.giphysample.ui.main.LiveEvent
 import com.example.giphysample.ui.main.base.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableObserver
@@ -18,11 +18,9 @@ class GifListViewModel(
     private val roomRepository: RoomRepository
 ) : BaseViewModel(), LifecycleObserver {
 
-    val liveDataImageGifs: MutableSingleLiveData<ViewData<List<GiphyImageItem>>> =
-        MutableSingleLiveData()
+    val liveDataImageGifs = LiveEvent<ViewData<List<GiphyImageItem>>>()
 
-    val liveDataSearch: MutableSingleLiveData<ViewData<List<GiphyImageItem>>> =
-        MutableSingleLiveData()
+    val liveDataSearch = LiveEvent<ViewData<List<GiphyImageItem>>>()
 
     fun fetchTrendingGifs(limit: Int? = null, offset: Int? = null) {
         compositeDisposable.add(

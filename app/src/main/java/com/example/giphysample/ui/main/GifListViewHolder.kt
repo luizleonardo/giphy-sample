@@ -1,4 +1,4 @@
-package com.example.giphysample.ui.main.trending
+package com.example.giphysample.ui.main
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -50,6 +50,7 @@ class GifListViewHolder(
 
     fun bind(data: GiphyImageItem) {
         shimmerFrameLayout.showShimmer(true)
+        favoriteButton.setOnCheckedChangeListener(null)
         favoriteButton.isChecked = data.isFavorite
         favoriteButton.setOnCheckedChangeListener { button, checked ->
             button?.startAnimation(scaleAnimation)

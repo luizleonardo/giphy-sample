@@ -17,15 +17,6 @@
         android:id="@+id/custom_view_search_view_progress"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_gravity="end|center"
-        android:layout_marginEnd="16dp"
-        android:indeterminateTint="@android:color/white"
-        android:visibility="gone" />
+        style="@style/CustomSearchProgressView" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/custom_view_search_view_image_view_voice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|center"
-        android:layout_marginEnd="16dp" />
 </FrameLayout>

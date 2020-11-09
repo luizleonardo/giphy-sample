@@ -1,4 +1,4 @@
-package com.example.giphysample.ui.main.trending
+package com.example.giphysample.ui.main.gifList
 
 import android.os.Bundle
 import android.text.Editable
@@ -18,9 +18,11 @@ import com.example.giphysample.ext.gone
 import com.example.giphysample.ext.startShowAnimation
 import com.example.giphysample.ext.visible
 import com.example.giphysample.ui.ViewData
+import com.example.giphysample.ui.main.GifListAdapter
+import com.example.giphysample.ui.main.GifListViewHolder
 import com.example.giphysample.ui.main.base.BaseFragment
 import com.example.giphysample.ui.main.favorite.FavoriteViewModel
-import com.example.giphysample.ui.main.trending.RxSearchObservable.DEBOUNCE
+import com.example.giphysample.ui.main.gifList.RxSearchObservable.DEBOUNCE
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -45,7 +47,7 @@ class GifListFragment : BaseFragment(), GifListViewHolder.FavoriteCallback {
     private val gifListViewModel: GifListViewModel by viewModel()
     private val favoriteViewModel: FavoriteViewModel by viewModel()
 
-    private val trendingAdapter = GifListAdapter(this@GifListFragment)
+    private val gifListAdapter = GifListAdapter(this@GifListFragment)
     private val compositeDisposable = CompositeDisposable()
     private var lastSearch: String? = null
     private var appCompatImageViewClose: AppCompatImageView? = null
@@ -108,29 +110,41 @@ class GifListFragment : BaseFragment(), GifListViewHolder.FavoriteCallback {
                 when (it?.status) {
                     ViewData.Status.LOADING -> {
                         custom_view_search_view_progress.visible()
+                        fragment_gif_list_progress_bar.visible()
                         appCompatImageViewClose?.gone()
                         fragment_gif_list_text_view_label.gone()
                         fragment_gif_list_recycler_view.gone()
                     }
                     ViewData.Status.COMPLETE -> {
                         custom_view_search_view_progress.gone()
+                        fragment_gif_list_progress_bar.gone()
                         appCompatImageViewClose?.visible()
                         fragment_gif_list_recycler_view.visible()
                         fragment_gif_list_text_view_label.visible()
                         fragment_gif_list_text_view_label.text =
                             getString(R.string.fragment_gif_list_search_label)
                         fragment_gif_list_recycler_view.startShowAnimation()
-                        trendingAdapter.submitList(it.data)
+                        gifListAdapter.submitList(it.data)
                     }
                     ViewData.Status.ERROR -> {
                         appCompatImageViewClose?.visible()
                         fragment_gif_list_text_view_label.gone()
+                        fragment_gif_list_progress_bar.gone()
                         custom_view_search_view_progress.gone()
                         fragment_gif_list_recycler_view.gone()
                     }
                 }
             }
         )
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!lastSearch.isNullOrEmpty()) {
+            gifListViewModel.search(query = lastSearch)
+            return
+        }
+        gifListViewModel.fetchTrendingGifs()
     }
 
     private fun observeSearchView(searchView: SearchView) {
@@ -160,7 +174,7 @@ class GifListFragment : BaseFragment(), GifListViewHolder.FavoriteCallback {
         super.setupView(view)
         view.fragment_gif_list_recycler_view.apply {
             layoutManager = GridLayoutManager(view.context, COLUMNS)
-            adapter = trendingAdapter
+            adapter = gifListAdapter
         }
         view.custom_view_search_view.apply {
             maxWidth = Integer.MAX_VALUE
@@ -190,6 +204,10 @@ class GifListFragment : BaseFragment(), GifListViewHolder.FavoriteCallback {
             observeSearchView(this)
         }
         setupSnackBar(view)
+        setupAlertDialog(view)
+    }
+
+    private fun setupAlertDialog(view: View) {
         val builder = AlertDialog.Builder(view.context)
         builder.setView(layoutInflater.inflate(R.layout.custom_dialog, null))
         alertDialog = builder.create()
@@ -219,7 +237,7 @@ class GifListFragment : BaseFragment(), GifListViewHolder.FavoriteCallback {
                         fragment_gif_list_recycler_view.startShowAnimation()
                         fragment_gif_list_text_view_label.text =
                             getString(R.string.fragment_gif_list_trending_label)
-                        trendingAdapter.submitList(it.data)
+                        gifListAdapter.submitList(it.data)
                     }
                     ViewData.Status.ERROR -> {
                         fragment_gif_list_text_view_label.gone()
