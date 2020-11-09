@@ -8,7 +8,8 @@ data class GiphyImageItem(
     var id: String? = null,
     var url: String? = null,
     @SerializedName("images")
-    val imageUrl: GiphyItemImageUrl
+    val imageUrl: GiphyItemImageUrl,
+    var isFavorite: Boolean = false
 )
 
 data class GiphyItemImageUrl(

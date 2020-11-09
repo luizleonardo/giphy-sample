@@ -50,6 +50,7 @@ class GifListViewHolder(
 
     fun bind(data: GiphyImageItem) {
         shimmerFrameLayout.showShimmer(true)
+        favoriteButton.isChecked = data.isFavorite
         favoriteButton.setOnCheckedChangeListener { button, checked ->
             button?.startAnimation(scaleAnimation)
             if (checked) {

@@ -46,7 +46,7 @@ val netWorkModules = module {
 
 val viewModels = module {
     viewModel {
-        GifListViewModel(get())
+        GifListViewModel(get(), get())
     }
     viewModel {
         FavoriteViewModel(get())

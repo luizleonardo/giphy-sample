@@ -20,6 +20,22 @@ class RoomRepository(private val dao: GiphyImageDao) {
         .map { return@map transformImageDataToImageItem(it) }
         .subscribeOn(Schedulers.io())
 
+    fun updateGiphyItem(data: List<GiphyImageItem>): Observable<List<GiphyImageItem>> =
+        Observable.create {
+            dao.findAll()
+                .map { giphyEntity ->
+                    data.forEach { giphyImageItem ->
+                        giphyEntity.map {giphyImageData ->
+                            if (giphyImageData.id == giphyImageItem.id)
+                                giphyImageItem.isFavorite = true
+                        }
+                    }
+                    it.onNext(data ?: emptyList())
+                    it.onComplete()
+                }
+                .subscribe()
+        }
+
     private fun transformImageItemToImageData(imageItem: GiphyImageItem): GiphyImageData =
         GiphyImageData(
             id = imageItem.id ?: "",
