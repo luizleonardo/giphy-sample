@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.SearchView
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.giphysample.R
 import com.example.giphysample.data.entities.GiphyImageItem
@@ -48,6 +49,7 @@ class GifListFragment : BaseFragment(), GifListViewHolder.FavoriteCallback {
     private val favoriteViewModel: FavoriteViewModel by viewModel()
 
     private val gifListAdapter = GifListAdapter(this@GifListFragment)
+    private val loadingAdapter = LoadingAdapter()
     private val compositeDisposable = CompositeDisposable()
     private var lastSearch: String? = null
     private var appCompatImageViewClose: AppCompatImageView? = null
@@ -173,8 +175,12 @@ class GifListFragment : BaseFragment(), GifListViewHolder.FavoriteCallback {
     override fun setupView(view: View) {
         super.setupView(view)
         view.fragment_gif_list_recycler_view.apply {
+            val concatAdapter = ConcatAdapter(
+                gifListAdapter,
+                loadingAdapter,
+            )
             layoutManager = GridLayoutManager(view.context, COLUMNS)
-            adapter = gifListAdapter
+            adapter = concatAdapter
         }
         view.custom_view_search_view.apply {
             maxWidth = Integer.MAX_VALUE
