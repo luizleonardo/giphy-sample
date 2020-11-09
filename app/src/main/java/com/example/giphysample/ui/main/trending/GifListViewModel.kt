@@ -1,8 +1,8 @@
 package com.example.giphysample.ui.main.trending
 
 import androidx.lifecycle.LifecycleObserver
-import com.example.giphysample.data.entities.GiphyTrendingHolder
-import com.example.giphysample.data.entities.GiphyTrendingItem
+import com.example.giphysample.data.entities.GiphyImageItem
+import com.example.giphysample.data.entities.GiphyResponseHolder
 import com.example.giphysample.data.repository.GiphyRepository
 import com.example.giphysample.ui.MutableSingleLiveData
 import com.example.giphysample.ui.ViewData
@@ -16,10 +16,10 @@ class GifListViewModel(
     private val giphyRepository: GiphyRepository
 ) : BaseViewModel(), LifecycleObserver {
 
-    val liveDataTrendingGifs: MutableSingleLiveData<ViewData<List<GiphyTrendingItem>>> =
+    val liveDataImageGifs: MutableSingleLiveData<ViewData<List<GiphyImageItem>>> =
         MutableSingleLiveData()
 
-    val liveDataSearch: MutableSingleLiveData<ViewData<List<GiphyTrendingItem>>> =
+    val liveDataSearch: MutableSingleLiveData<ViewData<List<GiphyImageItem>>> =
         MutableSingleLiveData()
 
     fun fetchTrendingGifs(limit: Int? = null, offset: Int? = null) {
@@ -27,20 +27,20 @@ class GifListViewModel(
             giphyRepository.fetchTrendingGifs(limit, offset)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { liveDataTrendingGifs.postValue(ViewData(LOADING)) }
-                .subscribeWith(object : DisposableObserver<GiphyTrendingHolder>() {
-                    override fun onNext(response: GiphyTrendingHolder) {
-                        liveDataTrendingGifs.value =
+                .doOnSubscribe { liveDataImageGifs.postValue(ViewData(LOADING)) }
+                .subscribeWith(object : DisposableObserver<GiphyResponseHolder>() {
+                    override fun onNext(response: GiphyResponseHolder) {
+                        liveDataImageGifs.value =
                             ViewData(status = SUCCESS, data = response.data)
                     }
 
                     override fun onError(error: Throwable) {
-                        liveDataTrendingGifs.value = ViewData(ERROR, error = error)
+                        liveDataImageGifs.value = ViewData(ERROR, error = error)
                     }
 
                     override fun onComplete() {
-                        liveDataTrendingGifs.value =
-                            ViewData(status = COMPLETE, data = liveDataTrendingGifs.value?.data)
+                        liveDataImageGifs.value =
+                            ViewData(status = COMPLETE, data = liveDataImageGifs.value?.data)
                     }
 
                 })
@@ -53,8 +53,8 @@ class GifListViewModel(
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { liveDataSearch.postValue(ViewData(LOADING)) }
-                .subscribeWith(object : DisposableObserver<GiphyTrendingHolder>() {
-                    override fun onNext(response: GiphyTrendingHolder) {
+                .subscribeWith(object : DisposableObserver<GiphyResponseHolder>() {
+                    override fun onNext(response: GiphyResponseHolder) {
                         liveDataSearch.value =
                             ViewData(status = SUCCESS, data = response.data)
                     }

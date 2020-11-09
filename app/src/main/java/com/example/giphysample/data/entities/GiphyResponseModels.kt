@@ -2,15 +2,16 @@ package com.example.giphysample.data.entities
 
 import com.google.gson.annotations.SerializedName
 
-data class GiphyTrendingHolder(val data: List<GiphyTrendingItem>)
+data class GiphyResponseHolder(val data: List<GiphyImageItem>)
 
-data class GiphyTrendingItem(
+data class GiphyImageItem(
     var id: String? = null,
     var url: String? = null,
-    val images: GiphyItemImages
+    @SerializedName("images")
+    val imageUrl: GiphyItemImageUrl
 )
 
-data class GiphyItemImages(
+data class GiphyItemImageUrl(
     @SerializedName("fixed_height_still") val stillImage: ImageMediumStill,
     @SerializedName("fixed_height") val gif: ImageMediumGif
 )

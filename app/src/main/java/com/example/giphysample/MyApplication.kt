@@ -1,6 +1,7 @@
 package com.example.giphysample
 
 import android.app.Application
+import com.example.giphysample.di.databaseModule
 import com.example.giphysample.di.netWorkModules
 import com.example.giphysample.di.repositoryModules
 import com.example.giphysample.di.viewModels
@@ -19,6 +20,7 @@ class MyApplication : Application() {
             androidContext(this@MyApplication)
             modules(
                 listOf(
+                    databaseModule,
                     netWorkModules,
                     repositoryModules,
                     viewModels

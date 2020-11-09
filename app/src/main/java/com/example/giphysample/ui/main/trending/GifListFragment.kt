@@ -7,16 +7,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.giphysample.R
+import com.example.giphysample.data.entities.GiphyImageItem
 import com.example.giphysample.ext.gone
 import com.example.giphysample.ext.startShowAnimation
 import com.example.giphysample.ext.visible
 import com.example.giphysample.ui.ViewData
 import com.example.giphysample.ui.main.base.BaseFragment
+import com.example.giphysample.ui.main.favorite.FavoriteViewModel
 import com.example.giphysample.ui.main.trending.RxSearchObservable.DEBOUNCE
+import com.google.android.material.snackbar.Snackbar
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -28,7 +33,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
-class GifListFragment : BaseFragment() {
+class GifListFragment : BaseFragment(), GifListViewHolder.FavoriteCallback {
 
     companion object {
         private const val COLUMNS = 2
@@ -38,12 +43,15 @@ class GifListFragment : BaseFragment() {
     }
 
     private val gifListViewModel: GifListViewModel by viewModel()
+    private val favoriteViewModel: FavoriteViewModel by viewModel()
 
-    private val trendingAdapter = GifListAdapter()
+    private val trendingAdapter = GifListAdapter(this@GifListFragment)
     private val compositeDisposable = CompositeDisposable()
     private var lastSearch: String? = null
     private var appCompatImageViewClose: AppCompatImageView? = null
     private var searchViewEditText: EditText? = null
+    private var snackBar: Snackbar? = null
+    private var alertDialog: AlertDialog? = null
 
     override fun layoutResource(): Int = R.layout.fragment_gif_list
 
@@ -60,7 +68,38 @@ class GifListFragment : BaseFragment() {
             observeSearch(this)
         }
 
+        with(favoriteViewModel) {
+            viewLifecycleOwner.lifecycle.addObserver(this)
+            observeFavorite(this)
+        }
+
         return view
+    }
+
+
+    private fun observeFavorite(favoriteViewModel: FavoriteViewModel) {
+        favoriteViewModel.liveDataAddFavorite.observe(viewLifecycleOwner, {
+            when (it?.status) {
+                ViewData.Status.LOADING -> {
+                    showProgressDialog(it.data ?: "Loading")
+                }
+                ViewData.Status.SUCCESS -> {
+                    dismissProgress()
+                    snackBar?.run {
+                        if (!isShown) this.show()
+                        this.view.findViewById<AppCompatTextView>(R.id.snackbar_text).text = it.data
+                    }
+                }
+                ViewData.Status.ERROR -> {
+                    dismissProgress()
+                    snackBar?.run {
+                        this.view.findViewById<AppCompatTextView>(R.id.snackbar_text).text =
+                            it.error?.message
+                        if (!isShown) this.show() else this.dismiss()
+                    }
+                }
+            }
+        })
     }
 
     private fun observeSearch(gifListViewModel: GifListViewModel) {
@@ -78,7 +117,8 @@ class GifListFragment : BaseFragment() {
                         appCompatImageViewClose?.visible()
                         fragment_gif_list_recycler_view.visible()
                         fragment_gif_list_text_view_label.visible()
-                        fragment_gif_list_text_view_label.text = getString(R.string.fragment_gif_list_search_label)
+                        fragment_gif_list_text_view_label.text =
+                            getString(R.string.fragment_gif_list_search_label)
                         fragment_gif_list_recycler_view.startShowAnimation()
                         trendingAdapter.submitList(it.data)
                     }
@@ -128,7 +168,12 @@ class GifListFragment : BaseFragment() {
                 this.findViewById(R.id.search_close_btn) as? AppCompatImageView
             searchViewEditText = this.findViewById(R.id.search_src_text) as? EditText
             searchViewEditText?.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -144,10 +189,22 @@ class GifListFragment : BaseFragment() {
             }
             observeSearchView(this)
         }
+        setupSnackBar(view)
+        val builder = AlertDialog.Builder(view.context)
+        builder.setView(layoutInflater.inflate(R.layout.custom_dialog, null))
+        alertDialog = builder.create()
+    }
+
+    private fun setupSnackBar(view: View) {
+        snackBar = Snackbar.make(
+            view.fragment_gif_list_content_holder,
+            "",
+            Snackbar.LENGTH_SHORT
+        )
     }
 
     private fun observeTrendingGifList(gifListViewModel: GifListViewModel) {
-        gifListViewModel.liveDataTrendingGifs.observe(
+        gifListViewModel.liveDataImageGifs.observe(
             viewLifecycleOwner, {
                 when (it?.status) {
                     ViewData.Status.LOADING -> {
@@ -160,7 +217,8 @@ class GifListFragment : BaseFragment() {
                         fragment_gif_list_recycler_view.visible()
                         fragment_gif_list_text_view_label.visible()
                         fragment_gif_list_recycler_view.startShowAnimation()
-                        fragment_gif_list_text_view_label.text = getString(R.string.fragment_gif_list_trending_label)
+                        fragment_gif_list_text_view_label.text =
+                            getString(R.string.fragment_gif_list_trending_label)
                         trendingAdapter.submitList(it.data)
                     }
                     ViewData.Status.ERROR -> {
@@ -171,5 +229,26 @@ class GifListFragment : BaseFragment() {
                 }
             }
         )
+    }
+
+    override fun onFavoriteAdd(data: GiphyImageItem) {
+        favoriteViewModel.addToFavorites(data)
+    }
+
+    override fun onFavoriteRemove(data: GiphyImageItem) {
+        favoriteViewModel.removeFromFavorites(data)
+    }
+
+    private fun showProgressDialog(message: String) {
+        view?.context?.let {
+            alertDialog?.show()
+            alertDialog?.findViewById<AppCompatTextView>(R.id.text_progress_bar)?.text = message
+        }
+    }
+
+    private fun dismissProgress() {
+        view?.context?.let {
+            alertDialog?.dismiss()
+        }
     }
 }
