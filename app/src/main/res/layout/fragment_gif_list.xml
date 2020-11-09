@@ -37,6 +37,7 @@
             android:id="@+id/fragment_gif_list_recycler_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/fragment_gif_list_content"
             app:layout_constraintEnd_toEndOf="@+id/fragment_gif_list_content"
             app:layout_constraintStart_toStartOf="@+id/fragment_gif_list_content"

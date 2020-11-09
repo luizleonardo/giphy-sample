@@ -54,7 +54,8 @@ class RoomRepository(private val dao: GiphyImageDao) {
                 imageUrl = GiphyItemImageUrl(
                     ImageMediumStill(it.image?.stillImage?.url ?: ""),
                     ImageMediumGif(it.image?.gif?.url ?: "")
-                )
+                ),
+                isFavorite = true
             )
         } ?: ArrayList()
 
